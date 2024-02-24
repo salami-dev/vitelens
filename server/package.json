@@ -2,7 +2,7 @@
   "name": "vitelens-server",
   "version": "1.0.0",
   "description": "server for the vitelens app. vitelens allow you upload, like and download images.\\",
-  "main": "src/server.js",
+  "main": "dist/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch-ts": "tsc -w",
