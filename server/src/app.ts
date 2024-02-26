@@ -1,9 +1,7 @@
 import express, { type Express, type Response, type Request, type NextFunction } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-
 import router from './routes/router';
-import path from 'path';
 
 
 
@@ -24,7 +22,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '..', 'public')));
+// app.use(express.static(path.join(__dirname, '..', 'public')));
 
 
 
@@ -41,8 +39,8 @@ app.use((err: Error & { statusCode: number }, req: Request, res: Response, next:
   next();
 });
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
-});
+// app.get('/*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+// });
 
 export default app;
