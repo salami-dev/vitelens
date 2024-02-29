@@ -2,15 +2,20 @@ import express, { type Express, type Response, type Request, type NextFunction }
 import morgan from 'morgan';
 import cors from 'cors';
 import router from './routes/router';
-
-
-
+import authRouter from './routes/auth/auth.router';
+import { passportGoogle, checkLoggedIn, session, removeStub  } from './services/auth/passport-google-strategy';
+import helmet from 'helmet';
 
 const app: Express = express();   
 app.use(cors());
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+app.use(helmet());
+
+app.use(session);
+app.use(removeStub);
 
 
 app.use(express.json());
@@ -23,10 +28,12 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 // app.use(express.static(path.join(__dirname, '..', 'public')));
+app.use(passportGoogle.initialize());
+app.use(passportGoogle.session());
 
 
-
-app.use('/api/v1/' , router);
+app.use('/auth', authRouter);
+app.use('/api/v1/' ,checkLoggedIn, router);
 // app.all('*', (req, res, next) => {
 //   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 // });
