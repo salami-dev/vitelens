@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, UpdateDateColumn, ManyToOne, ManyToMany, JoinTable } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, UpdateDateColumn, ManyToOne, ManyToMany, JoinTable, Index } from "typeorm"
 import { User } from "./User"
 import { Tag } from "./Tag"
 
@@ -12,7 +12,11 @@ export class Photo extends BaseEntity {
     name: string
 
     @Column("text")
+    @Index({ fulltext: true })  // is fulltext indexing wise ?
     description: string
+
+    @Column()
+    isPrivate: boolean
 
     @Column()
     filename: string
@@ -20,7 +24,7 @@ export class Photo extends BaseEntity {
     @Column()
     imgURL: string
 
-    @Column("double")
+    @Column("int", { default: 0 })
     views: number
 
     
