@@ -10,6 +10,7 @@ export const AppDataSource = new DataSource({
     username: "postgres",
     password: "password",
     database: "vitelens-dev-db",
+    applicationName: "vitelens",
     synchronize: true,
     logging: false,
     entities: [User, Tag, Photo],

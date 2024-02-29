@@ -1,35 +1,32 @@
 
 import 'dotenv/config'
+// import { createConnection, createConnections } from 'typeorm';
 import { AppDataSource } from "./connectDB"
 import app from './app';
 
 const PORT =8000;
 
-async function startServer (): Promise<void> {
+// createConnection
 
-  try {
-    await AppDataSource.connect();
-    app.listen(PORT, () => { console.log(`running on port : ${PORT}`); });
+    async function startServer(){
 
-    console.log('Connected to the database succefully!');
+      try {
 
-    console.log("Yipee piyee yee! Yaa ypoooo!!!!!")
-  } catch (err) {
+        await AppDataSource.initialize();
+        console.log("Data Source initialized successfully");
+        app.listen(PORT, () => { console.log(`running on port : ${PORT}`); });
+        
+      } catch (err) {
+        console.error("Error during Data Source initialization:", err)
+        
+      }
 
-    if (err.code === '3D000') { // Postgres error code for database not existing
-      await AppDataSource.query('CREATE DATABASE IF NOT EXISTS vitelens-dev-db');
-      await AppDataSource.initialize(); 
-      console.log("Database created and connected");
-    } else {
-      console.error("Error connecting to database:", err); 
     }
-    // console.error('Error connecting to the database: ', err);
-  }
 
-  
-}
+    startServer();
 
-startServer();
+
+
 
 process.on('bad auth', (err: unknown) => {
   console.log('UNHANDLED REJECTION! 💥 Shutting down...');
