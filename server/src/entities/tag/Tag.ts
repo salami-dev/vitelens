@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToMany } from "typeorm"
-import { Photo } from "./Photo"
+import { Photo } from "../photo/Photo"
 
 
 @Entity()

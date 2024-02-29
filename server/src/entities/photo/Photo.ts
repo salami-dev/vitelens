@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, UpdateDateColumn, ManyToOne, ManyToMany, JoinTable, Index } from "typeorm"
-import { User } from "./User"
-import { Tag } from "./Tag"
+import { User } from "../user/User"
+import { Tag } from "../tag/Tag"
 
 @Entity()
 export class Photo extends BaseEntity {
@@ -22,7 +22,7 @@ export class Photo extends BaseEntity {
     filename: string
 
     @Column()
-    imgURL: string
+    url: string
 
     @Column("int", { default: 0 })
     views: number

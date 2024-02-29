@@ -3,7 +3,7 @@ import {
     IsEmail,
 } from "class-validator"
 // import { AppDataSource } from "../connectDB"
-import { Photo } from "./Photo"
+import { Photo } from "../photo/Photo"
 
 
 @Entity()

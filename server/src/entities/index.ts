@@ -1,3 +1,3 @@
-export {Photo } from './Photo';
-export {Tag } from './Tag';
-export {User } from './User';
+export {Photo, } from './photo/Photo';
+export {Tag } from './tag/Tag';
+export {User } from './user/User';

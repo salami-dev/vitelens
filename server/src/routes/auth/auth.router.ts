@@ -1,7 +1,7 @@
 import express from 'express';
 import { passportGoogle } from '../../services/auth/passport-google-strategy';
 import { httpCreateUser } from '../users/users.controller';
-import { User } from '../../entities/User';
+import { User } from '../../entities';
 import { Profile } from 'passport';
 
 
