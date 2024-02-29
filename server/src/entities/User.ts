@@ -1,4 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm"
+import {
+    IsEmail,
+} from "class-validator"
+// import { AppDataSource } from "../connectDB"
 import { Photo } from "./Photo"
 
 
@@ -13,14 +17,11 @@ export class User extends BaseEntity {
 
     @Column()
     lastName: string
-
-    // @Column()
-    // age: number
     
     @Column({
         unique: true
-
     })
+    @IsEmail()
     email: string
 
     @Column()
@@ -41,3 +42,5 @@ export class User extends BaseEntity {
 
 
 }
+
+// export const userRepository = AppDataSource.getRepository(User);
