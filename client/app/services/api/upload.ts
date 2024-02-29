@@ -27,6 +27,14 @@ export class UploadApi {
     });
   }
 
+  public static async getAll(): Promise<any[]> {
+    const response = await Http.get<any[]>({
+      url: '/photos'
+    });
+
+    return response.data;
+  }
+
   public static async uploadMultipleFilesWithSignedUrls(files: File[]): Promise<UploadApiTypes.UploadMultipleFilesResponse> {
     const signedUrls = await Promise.all(files.map((file) => UploadApi.createSignedUrl({ key: file.name, file })));
     await Promise.all(signedUrls.map((signedUrl, index) => UploadApi.uploadFile(files[index], signedUrl.url)));
