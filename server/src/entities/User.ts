@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm"
+import { Entity, PrimaryColumn, Column, BaseEntity, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm"
 import {
     IsEmail,
 } from "class-validator"
@@ -9,8 +9,10 @@ import { Photo } from "./Photo"
 @Entity()
 export class User extends BaseEntity {
 
-    @PrimaryGeneratedColumn()
-    id: number
+    @PrimaryColumn({
+        unique: true
+    })
+    id: string
 
     @Column()
     firstName: string
@@ -23,9 +25,6 @@ export class User extends BaseEntity {
     })
     @IsEmail()
     email: string
-
-    @Column()
-    password: string
 
     @CreateDateColumn()
     createdAt: Date
