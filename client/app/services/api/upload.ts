@@ -20,6 +20,13 @@ export class UploadApi {
     });
   }
 
+  public static async uploadPhotoMetadata(data: UploadApiTypes.UploadPhotoMetadataRequest): Promise<void> {
+    await Http.post({
+      url: '/photos',
+      payload: data
+    });
+  }
+
   public static async uploadMultipleFilesWithSignedUrls(files: File[]): Promise<UploadApiTypes.UploadMultipleFilesResponse> {
     const signedUrls = await Promise.all(files.map((file) => UploadApi.createSignedUrl({ key: file.name, file })));
     await Promise.all(signedUrls.map((signedUrl, index) => UploadApi.uploadFile(files[index], signedUrl.url)));
@@ -30,6 +37,13 @@ export class UploadApi {
 export declare namespace UploadApiTypes {
   export type SignedUrlResponse = {
     preSignedurl: string;
+    url: string;
+  };
+  export type UploadPhotoMetadataRequest = {
+    name: string;
+    description: string;
+    isPrivate: boolean;
+    filename: string;
     url: string;
   };
   export type UploadMultipleFilesResponse = SignedUrlResponse[];

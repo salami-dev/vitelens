@@ -38,7 +38,8 @@ const BaseFileUpload: React.FC<Props> = ({ fileType = 'image', setError, setLoad
       const data = await UploadApi.createSignedUrl({ key: updatedName, file });
       console.log("data.presigned in onFileSelect: ", data, "What do we do with it ?")
       const uploaded = await UploadApi.uploadFile(file, data.preSignedurl);
-      console.log("uploaded in onFileSelect: ", uploaded, "What do we have ?")
+      const uploadMetadata = await UploadApi.uploadPhotoMetadata({ name: updatedName, description: "", isPrivate: false, filename: file.name, url: data.url});
+      // console.log("uploaded in onFileSelect: ", uploaded, "What do we have ?", "uploadMetadata in onFileSelect: ", uploadMetadata, "What do we have ?")
       setError(undefined);
       onChange({
         url: data.url,
