@@ -12,13 +12,16 @@ import { GOOGLE_AUTH_OPTIONS, AUTH_CONFIG } from './config';
 // callback after user has signed in with google auth. let us do and undo here
 
 function VerifyCallback(accessToken: string, refreshToken: string, profile: Profile, done: VerifyCallback) {
+  // console.log('profile" = ', profile)
+  
+  // console.log(profile.emails[0], "profile from google", "id from google", profile.id, "displayName from google", profile.displayName, "photos from google", profile.photos[0]);
   done(undefined, profile);
 }
 
 passport.use(new GoogleStrategy(GOOGLE_AUTH_OPTIONS, VerifyCallback));
 
 // Save the session to the cookie
-passport.serializeUser((user , done) => {
+passport.serializeUser((user:Profile , done) => {
     done(null, user.id);
   });
   

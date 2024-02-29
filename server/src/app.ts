@@ -7,7 +7,10 @@ import { passportGoogle, checkLoggedIn, session, removeStub  } from './services/
 import helmet from 'helmet';
 
 const app: Express = express();   
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',  
+  credentials: true // Important: Allow sending of cookies 
+}));
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }

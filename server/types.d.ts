@@ -1,5 +1,5 @@
-declare namespace Express {
-    interface User {
-        id?: string;
-    }
-}
+// declare namespace Express {
+//     interface User {
+//         id?: string;
+//     }
+// }

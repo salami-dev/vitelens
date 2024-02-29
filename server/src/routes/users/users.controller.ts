@@ -5,8 +5,8 @@ import { AppDataSource } from "./../../connectDB";
 
 
 export const httpCreateUser = async (req:Request, res:Response) => {
-  const { email, password, firstName, lastName,  } = req.body;
-  const user = {... new User(), email, password, firstName, lastName,}
+  const { email, firstName, lastName, id } = req.body;
+  const user = {... new User(), id, email, firstName, lastName,}
 
   console.log('user: ', user);
   const userRepository = AppDataSource.getRepository(User);
@@ -30,10 +30,12 @@ export const httpGetAllUsers = async (req:Request, res:Response) => {
 
 export const httpGetUserById = async (req:Request, res:Response) => {
   const userRepository = AppDataSource.getRepository(User);
-  const id  = Number(req.params.id);
+  const id  = req.params.id.toString();
   const user = await userRepository.findOne({
     where: {id}
   });
+
+  // console.log('user: was fount ', user);
   if (!user) {
     res.status(404).json({ message: 'User not found' });
   } else {
