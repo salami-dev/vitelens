@@ -1,6 +1,6 @@
 import { type Request, type Response } from 'express';
 import catchAsync from './../../utils/catchAsync.js';
-import { createPresignedUrl, createGetPresignedUrl } from './../../models/s3/s3.model';
+import { createPresignedUrl, createGetPresignedUrl } from '../../entities/s3/s3.model.js';
 import {REGION, BUCKET} from './constants'
 
 
