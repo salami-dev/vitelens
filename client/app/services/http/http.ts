@@ -8,7 +8,8 @@ export default class Http {
     baseURL: BASE_URL[Envs.dev],
     headers: {
       [Headers.CONTENT_TYPE]: 'application/json'
-    }
+    },
+    withCredentials: true
   });
 
 // auth token setting
