@@ -1,6 +1,6 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
-import { Photo, Tag, User } from "./entities"
+import { Photo, Tag, User } from "./models"
 
 
 export const AppDataSource = new DataSource({

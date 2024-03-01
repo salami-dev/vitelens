@@ -1,6 +1,6 @@
 import { type Request, type Response } from 'express';
-import { Photo } from "./../../entities";
-import { createPhoto,getAllPhotos, getPhotoById } from '../../entities/photo/photo.model';
+import { Photo } from "./../../models";
+import { createPhoto,getAllPhotos, getPhotoById } from '../../models/photo/photo.model';
 import catchAsync from "../../utils/catchAsync";
 
 
