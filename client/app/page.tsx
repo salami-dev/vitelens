@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import Link from 'next/link'
 import UploadImage from './components/UploadImage';
 import BaseFileUpload from './components/BasefileUpload';
 import { LoadingButton as Button } from '@mui/lab';
@@ -17,13 +18,11 @@ export default function BasicButtons() {
   const [images, setImages] = React.useState([] as any[]);  
 
   React.useEffect(() => {
-
     const fetchImages = async () => {
       const images = await UploadApi.getAll();
       console.log("IMAGES", images)
       setImages(images);
     }
-
     fetchImages();
   }, [fileUrl])
 
@@ -41,11 +40,7 @@ export default function BasicButtons() {
       width: '200px',
       margin: '0 auto',
     }} >
-      {/* <Button variant="text">Text</Button>
-      <Button variant="contained">Contained</Button>
-      <Button variant="outlined">Outlined</Button> */}
-      {/* <UploadImage />  */}
-      {/* <BaseFileUpload fileType="image" onChange={(file) => console.log(file)} /> */}
+      <Link href="/about"><Button variant='outlined'>Home</Button></Link>
 
       <BaseFileUpload
           onChange={handleOnChange}
