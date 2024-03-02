@@ -3,6 +3,7 @@ import { passportGoogle } from '../../services/auth/passport-google-strategy';
 import { httpCreateUser } from '../users/users.controller';
 import { User } from '../../models';
 import { Profile } from 'passport';
+import catchAsync from "../../utils/catchAsync";
 
 
 const router = express.Router();
@@ -17,27 +18,27 @@ const aunthenticate = passportGoogle.authenticate('google', {
 })
 
 
-router.get('/google/callback',aunthenticate ,async (req, res) => {
+router.get('/google/callback',aunthenticate , catchAsync(
+  async (req, res) => {  
+    const profile = req.user as Profile;
+    req.body= {...req.body, id:profile.id, email:profile.emails[0].value, firstName:"", lastName:"",};
+    try {
   
-  const profile = req.user as Profile;
-  req.body= {...req.body, id:profile.id, email:profile.emails[0].value, firstName:"", lastName:"",};
-  try {
-
-    const user = await User.findOne({where: {email: profile.emails[0].value}});
-    if(!user) {
-      console.log("NO USER.... CREATING USER")
-    await httpCreateUser(req, res);
+      const user = await User.findOne({where: {email: profile.emails[0].value}});
+      if(!user) {
+      await httpCreateUser(req, res);
+      }
+      return res.redirect('http://localhost:3000');      
+    } catch (error) {
+      console.log("ERROR CREARTING USER...", error.message)
+     return res.status(500).json({error: error.message});
+      // return    
     }
-    return res.redirect('http://localhost:3000');
-    
-  } catch (error) {
-    console.log("ERROR CREARTING USER...", error.message)
-    res.status(500).json({error: error.message});
-    // return    
   }
-});
+));
 
-router.get('/logout', (req, res,next) => {
+router.get('/logout', catchAsync(
+  async (req, res,next) => {
     //Removes req.user and clears any logged in session
     req.logout((err) => {
       if (err) {
@@ -45,8 +46,17 @@ router.get('/logout', (req, res,next) => {
       }
       res.redirect('/');
     });
-});
+}
+));
 
+router.get('/isloggedin', (req, res) => {
+  if (req.user && req.isAuthenticated()) {
+    return res.json({isLoggedIn: true});
+  }
+  return res.status(401).json({
+    error: 'User not authenticated',
+  });
+});
 
 
 

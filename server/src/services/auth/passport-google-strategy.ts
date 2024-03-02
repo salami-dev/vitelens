@@ -1,4 +1,3 @@
-
 import { type Response, type Request, type NextFunction } from 'express';
 import passport, {Profile,  } from 'passport';
 // import by extracting GoogleStrategy from passport-google-oauth20
@@ -30,6 +29,7 @@ passport.serializeUser((user:Profile , done) => {
     done(null, id);
   });
 
+  // TODO: this shhould be an auth model or middleware. move it
   export function checkLoggedIn(req:Request, res:Response, next:NextFunction) {
     console.log('Current user is:', req.user);
     const isLoggedIn = req.isAuthenticated() && req.user;
