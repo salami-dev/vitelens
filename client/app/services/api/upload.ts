@@ -4,7 +4,7 @@ import axios from 'axios';
 export class UploadApi {
   public static async createSignedUrl(data: { key: string,file:File }): Promise<UploadApiTypes.SignedUrlResponse> {
     const response = await Http.post<UploadApiTypes.SignedUrlResponse>({
-      url: '/s3',
+      url: '/api/v1/s3',
       payload: data
     });
 
@@ -22,14 +22,14 @@ export class UploadApi {
 
   public static async uploadPhotoMetadata(data: UploadApiTypes.UploadPhotoMetadataRequest): Promise<void> {
     await Http.post({
-      url: '/photos',
+      url: '/api/v1/photos',
       payload: data
     });
   }
 
   public static async getAll(): Promise<any[]> {
     const response = await Http.get<any[]>({
-      url: '/photos'
+      url: '/api/v1/photos'
     });
 
     return response.data;
