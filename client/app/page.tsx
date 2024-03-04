@@ -7,6 +7,9 @@ import { LoadingButton as Button } from '@mui/lab';
 import { Grid, Box, Stack } from '@mui/material';
 import { UploadApi } from './services/api/upload';
 import ImageCard from './components/ImageCard';
+import { AuthApi } from './services/api/auth';
+import { useAuth } from './hooks/useAuth';
+import AuthGuard from './utils/AuthGuard';
 
 export default function BasicButtons() {
 
@@ -14,12 +17,28 @@ export default function BasicButtons() {
   const [loading, setLoading] = React.useState(false);
   const [value, setValue] = React.useState<{ url: string; name: string }>();
   const [fileUrl, setFileUrl] = React.useState('');
+  const { data, isLoading } = useAuth();
 
-  const [images, setImages] = React.useState([] as any[]);  
+  console.log("DATA login status", data)
+  console.log("Broohahahahahaha")
+
+  const [images, setImages] = React.useState([] as any[]); 
+  
+  const handleLoginWithGoogle = async () => {
+    try {
+      
+      await AuthApi.loginWithGoogle();
+      console.log("RESPONSE","succefull login")
+    } catch (error) {
+      console.log("ERROR", error)
+      
+    }
+
+  }
 
   React.useEffect(() => {
     const fetchImages = async () => {
-      const images = await UploadApi.getAll();
+      const images = await UploadApi.getAll(); //TODO: haha. you know what to do.
       console.log("IMAGES", images)
       setImages(images);
     }
@@ -35,12 +54,15 @@ export default function BasicButtons() {
   console.log("PROCESS env", process.env.ENV)
   console.log(images, "IMAGES")
   return (
-   <Box>
+ <AuthGuard>
+    <Box>
      <Stack useFlexGap spacing={2} direction="column"  sx={{
       width: '200px',
       margin: '0 auto',
     }} >
       <Link href="/about"><Button variant='outlined'>Home</Button></Link>
+
+      <Link href="http://localhost:8000/auth/google"> <Button onClick={handleLoginWithGoogle} fullWidth variant='outlined'> LoginWith Google</Button></Link>
 
       <BaseFileUpload
           onChange={handleOnChange}
@@ -72,5 +94,6 @@ export default function BasicButtons() {
      )}
    </Grid> 
    </Box>
+ </AuthGuard>
   );
 }

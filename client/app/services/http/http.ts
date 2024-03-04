@@ -23,6 +23,8 @@ export default class Http {
 
   public static onUnauthorized(cb: () => void): void {
     this.axiosInstance.interceptors.response.use(undefined, (error: AxiosError) => {
+
+      console.log("unatuorized error from axios interceptor", error.response?.status, error.response?.status === 401)
       if (error.response?.status === 401) {
         return cb();
       }
@@ -35,7 +37,7 @@ export default class Http {
       method: requestConfig.method,
       url: requestConfig.url,
       params: requestConfig.query,
-      headers: requestConfig.headers,
+      headers: {...requestConfig.headers, 'Access-Control-Allow-Origin': '*'},
       data: requestConfig.payload,
       responseType: requestConfig.responseType ? requestConfig.responseType : 'json'
     });
