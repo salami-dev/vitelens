@@ -1,5 +1,5 @@
 import { type Request, type Response } from 'express';
-import { User } from "./../../entities";
+import { User } from "./../../models";
 import { AppDataSource } from "./../../connectDB";
 
 
