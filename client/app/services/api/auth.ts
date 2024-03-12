@@ -23,24 +23,19 @@ export class AuthApi {
     return response.data;
   }
 
-    public static async logout(): Promise<void> {
-        const response = await Http.get<void>({
-        url: '/auth/logout'
-        });
-    
-        console.log("response in logout: ", response)
-    
-        return response.data;
-    }
+  public static async logout(): Promise<void> {
+      const response = await Http.get<void>({
+      url: '/auth/logout'
+      });  
+      return response.data;
+  }
 
 
 }
 
 export declare namespace AuthApiTypes {
   export type loginResponse =  void;
-  export type isLoggedInResponse = {
-    isLoggedIn: boolean;
-  };
+  export type isLoggedInResponse = boolean;
 //   export type UploadMultipleFilesResponse = SignedUrlResponse[];
 }
 

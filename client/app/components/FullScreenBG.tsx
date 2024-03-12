@@ -18,12 +18,15 @@ const FullScreenBG = ({
     children: React.ReactNode;
   }>) => {
   return (
- <Box >
-    {children}
-
- </Box>
-
-    
+    <Container maxWidth={false} disableGutters sx={{
+      height:'100vh'
+    }}>
+      <Box sx={{
+        height:'100%'
+      }} >
+        {children}
+      </Box>
+    </Container>    
   )
 }
 

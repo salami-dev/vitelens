@@ -44,18 +44,13 @@ router.get('/logout', catchAsync(
       if (err) {
         return next(err);
       }
-      res.redirect('/');
+      res.json(null)
     });
 }
 ));
 
 router.get('/isloggedin', (req, res) => {
-  if (req.user && req.isAuthenticated()) {
-    return res.json({isLoggedIn: true});
-  }
-  return res.status(401).json({
-    error: 'User not authenticated',
-  });
+  return res.json(req.user && req.isAuthenticated());
 });
 
 
