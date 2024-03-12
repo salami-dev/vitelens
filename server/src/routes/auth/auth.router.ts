@@ -44,7 +44,7 @@ router.get('/logout', catchAsync(
       if (err) {
         return next(err);
       }
-      res.redirect('/');
+      res.json(null)
     });
 }
 ));
