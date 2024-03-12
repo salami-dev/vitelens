@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import Link from 'next/link'
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import UploadImage from './components/UploadImage';
 import BaseFileUpload from './components/BasefileUpload';
 import { LoadingButton as Button } from '@mui/lab';
@@ -8,8 +9,9 @@ import { Grid, Box, Stack } from '@mui/material';
 import { UploadApi } from './services/api/upload';
 import ImageCard from './components/ImageCard';
 import { AuthApi } from './services/api/auth';
-import { useAuth } from './hooks/useAuth';
+import { useAuth } from './hooks/auth';
 import AuthGuard from './utils/AuthGuard';
+import { redirect, useRouter } from 'next/navigation'
 
 export default function BasicButtons() {
 
@@ -17,12 +19,19 @@ export default function BasicButtons() {
   const [loading, setLoading] = React.useState(false);
   const [value, setValue] = React.useState<{ url: string; name: string }>();
   const [fileUrl, setFileUrl] = React.useState('');
-  const { data, isLoading } = useAuth();
-
-  console.log("DATA login status", data)
-  console.log("Broohahahahahaha")
+  const router = useRouter()
 
   const [images, setImages] = React.useState([] as any[]); 
+  const queryClient = useQueryClient();
+
+  const authClient = useAuth()
+  const {isLoading, data, isError} = authClient;
+
+  const {mutate} = useMutation({
+    mutationFn: AuthApi.isLoggedIn
+  })
+  
+
   
   const handleLoginWithGoogle = async () => {
     try {
@@ -33,6 +42,14 @@ export default function BasicButtons() {
       console.log("ERROR", error)
       
     }
+
+  }
+
+  const handleLogout = async ()=>{
+    await AuthApi.logout();
+    mutate();
+    queryClient.invalidateQueries({queryKey: ['auth']})
+    router.push('/auth')
 
   }
 
@@ -61,6 +78,8 @@ export default function BasicButtons() {
       margin: '0 auto',
     }} >
       <Link href="/about"><Button variant='outlined'>Home</Button></Link>
+
+      <Button onClick={handleLogout}>  Logout </Button>
 
       <Link href="http://localhost:8000/auth/google"> <Button onClick={handleLoginWithGoogle} fullWidth variant='outlined'> LoginWith Google</Button></Link>
 
