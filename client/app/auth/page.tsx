@@ -28,6 +28,7 @@ const AuthPage = () => {
           <Grid item xs={6} >
             
       <Link href="http://localhost:8000/auth/google"> <Button fullWidth variant='outlined'> Login With Google</Button></Link>
+      <Link href="/upload"> <Button fullWidth variant='outlined'> Upload Image</Button></Link>
 
           </Grid>
         </Grid>
