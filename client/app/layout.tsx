@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import CssBaseline from '@mui/material/CssBaseline';
 import type { Viewport } from 'next'
-import Tanstack from "./utils/Tanstack"; 
+import Main from "./Main";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -31,11 +30,12 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <CssBaseline enableColorScheme />
       <body className={inter.className}>
-        <Tanstack>
-        {children}
-        </Tanstack>
+        <Main>
+          {children}
+        </Main>
+
+       
  
         </body>
     </html>
