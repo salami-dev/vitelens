@@ -1,46 +1,130 @@
 "use client";
-import {useState} from 'react';
-import { LoadingButton as Button } from '@mui/lab';
-import BaseFileUpload from '@/components/BasefileUpload';
-import BaseFileSelect from '@/components/BaseFileSelect';
+import { useState } from "react";
+import { LoadingButton as Button } from "@mui/lab";
+import BaseFileUpload from "@/components/BasefileUpload";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import BaseFileSelect from "@/components/BaseFileSelect";
+import { Typography, Box, IconButton, Grid, Stack } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import ImagePreview from "./ImagePreview";
 
 const Action = () => {
-    
-    const [displayedError, setDisplayedError] = useState<string>();
-    const [loading, setLoading] = useState(false);
-    const [value, setValue] = useState<{ url: string; name: string }>();
-    const [fileUrl, setFileUrl] = useState('');
+  const [displayedError, setDisplayedError] = useState<string>();
+  const [loading, setLoading] = useState(false);
+  const [value, setValue] = useState<{ url: string; name: string }>();
+  const [fileUrl, setFileUrl] = useState("");
+  const [file, setFile] = useState<File>();
+  const [fileName, setFileName] = useState("");
 
-    const handleOnChange = (v: { url: string; name: string }) => {
-        setFileUrl(v.url);
-        setValue(v);
-      };
+  const handleOnChange = (v: { url: string; name: string }) => {
+    setFileUrl(v.url);
+    setValue(v);
+  };
+
+  const handleOnClick = () => {
+    console.log(file);
+  };
+
+  const ImageUpload = () => (
+    <BaseFileSelect
+      onChange={handleOnChange}
+      setError={setDisplayedError}
+      setLoading={setLoading}
+      setFileName={setFileName}
+      setFile={setFile}
+    >
+      <Stack useFlexGap>
+        <FileUploadIcon
+          color="primary"
+          fontSize="large"
+          sx={{
+            fontSize: "75px",
+          }}
+          titleAccess="upload image"
+        />
+        <Typography color="primary" variant="subtitle2" align="center">
+          {" "}
+          Select Image to upload
+        </Typography>
+      </Stack>
+    </BaseFileSelect>
+  );
 
   return (
     <>
-    <BaseFileUpload
-    onChange={handleOnChange}
-    setError={(e) => setDisplayedError(e)}
-    setLoading={(v) => setLoading(v)}
-  >
-    
-      
-    {/* {value?.name ? value?.name :'No file selected'} */}
-    <Button variant="outlined" loading={loading} color="inherit" sx={{ height: '100%', width: '7.6rem' }}>
+      <Box
+        sx={{
+          height: 300,
+          my: 4,
+          px: 2,
+        }}
+      >
+        <Grid
+          container
+          justifyContent="center"
+          alignItems="center"
+          sx={{ height: "100%" }}
+        >
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            sx={{
+              border: "1px solid #ccc",
+              borderRadius: 4,
+              position: "relative",
+              height: "100%",
+            }}
+            container
+            justifyContent="center"
+          >
+            {file && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  bgcolor: "#ccc",
+                  borderTopRightRadius: "8px",
+                  borderBottomLeftRadius: "8px",
+                }}
+                component="div"
+              >
+                <IconButton
+                  onClick={() => {
+                    setFile(undefined);
+                    setFileName("");
+                    setDisplayedError("");
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>{" "}
+              </Box>
+            )}
+            {file ? <ImagePreview src={file} /> : <ImageUpload />}
+          </Grid>
+        </Grid>
+      </Box>
 
-      
-      {value?.name ? value?.name :'No file selected'}
-      {value?.name ? 'Change' : 'Upload'}
-    </Button>
-  </BaseFileUpload>
+      <Box>
+        <Typography variant="subtitle2">
+          File name : {fileName ? fileName : "Please select an Image to upload"}
+        </Typography>
 
-
-    LoadingButton as Button
-
-    <BaseFileSelect />
-    
+        <Box pt={2}>
+          <Button
+            onClick={handleOnClick}
+            variant="contained"
+            fullWidth
+            disabled={!file}
+          >
+            {" "}
+            Upload
+          </Button>
+        </Box>
+      </Box>
     </>
-  )
-}
+  );
+};
 
-export default Action
+export default Action;
