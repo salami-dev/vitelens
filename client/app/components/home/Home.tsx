@@ -1,33 +1,22 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import UploadImage from "@/components/UploadImage";
-import BaseFileUpload from "@/components/BasefileUpload";
 import { LoadingButton as Button } from "@mui/lab";
 import { Grid, Box, Stack } from "@mui/material";
-import { UploadApi } from "@/services/api/upload";
 import ImageCard from "@/components/ImageCard";
 import { AuthApi } from "@/services/api/auth";
 import { useAuth } from "@/hooks/auth";
-import AuthGuard from "@/utils/AuthGuard";
-// import { useRouter, redirect } from 'next/navigation'
+import { PhotoApi } from "@/services/api/photos";
 
 export default function Home() {
-  const [displayedError, setDisplayedError] = React.useState<string>();
-  const [loading, setLoading] = React.useState(false);
-  const [value, setValue] = React.useState<{ url: string; name: string }>();
-  const [fileUrl, setFileUrl] = React.useState("");
-
   const [images, setImages] = React.useState([] as any[]);
 
   const authClient = useAuth();
-  const { isLoading, data, isError, mutate, invaidate } = authClient;
+  const { mutate, invaidate } = authClient;
 
   const handleLoginWithGoogle = async () => {
     try {
       await AuthApi.loginWithGoogle();
-      console.log("RESPONSE", "succefull login");
     } catch (error) {
       console.log("ERROR", error);
     }
@@ -41,17 +30,11 @@ export default function Home() {
 
   React.useEffect(() => {
     const fetchImages = async () => {
-      const images = await UploadApi.getAll(); //TODO: haha. you know what to do.
-      console.log("IMAGES", images);
+      const images = await PhotoApi.getPhotos(); //TODO: haha. you know what to do.
       setImages(images);
     };
     fetchImages();
-  }, [fileUrl]);
-
-  const handleOnChange = (v: { url: string; name: string }) => {
-    setFileUrl(v.url);
-    setValue(v);
-  };
+  }, []);
 
   return (
     <Box>

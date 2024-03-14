@@ -17,18 +17,3 @@ export const useAuth = () => {
   return {...qr, mutate, invaidate}
 };
 
-
-// export const useLogout = () => {
-//   return useMutation<void, unknown, void>(
-//     () => AuthApi.logout(),  // Your logout function is the mutationFn
-//       {
-//           onSuccess: () => {
-//              console.log("logout success")
-//           },
-//           onError: (error) => {
-//             console.log(error, "error in use logout")
-//               // Handle the error, display messages, etc. 
-//           },
-//       }
-//   );
-// };

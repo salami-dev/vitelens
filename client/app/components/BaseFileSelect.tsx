@@ -1,7 +1,6 @@
 import { useCallback, useRef } from "react";
 import { IconButton } from "@mui/material";
 import { UploadApi, UploadApiTypes } from "@/services/api/upload";
-import { PhotoApi } from "@/services/api/photos";
 
 interface Props {
   onChange: (
@@ -14,10 +13,6 @@ interface Props {
   fileType?: "image";
   children?: React.ReactNode;
   disabled?: boolean;
-  // setValue: (v: {
-  //   signedData: UploadApiTypes.SignedUrlResponse;
-  //   name: string;
-  // }) => void;
   setFile: (file: File) => void;
 }
 
@@ -28,7 +23,6 @@ const BaseFileSelect: React.FC<Props> = ({
   onChange,
   children,
   disabled,
-  // setValue,
   setFile,
 }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -62,7 +56,6 @@ const BaseFileSelect: React.FC<Props> = ({
 
       setError(undefined);
 
-      // setValue(value);
       onChange(signedData, updatedName, file);
       setFile(file);
       //  Whatever happens in on change should not be dependent on the completeion of setValue due to the asynchronous nature of setValue

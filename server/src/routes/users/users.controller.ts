@@ -4,38 +4,34 @@ import { AppDataSource } from "./../../connectDB";
 
 
 
-export const httpCreateUser = async (req:Request, res:Response) => {
+export const httpCreateUser = async (req: Request, res: Response) => {
   const { email, firstName, lastName, id } = req.body;
-  const user = {... new User(), id, email, firstName, lastName,}
-
-  console.log('user: ', user);
+  const user = { ... new User(), id, email, firstName, lastName, }
   const userRepository = AppDataSource.getRepository(User);
 
   try {
     await userRepository.save(user);
-    console.log('user: ', user, " has been saved");    
-    res.status(201).json({ user });    
+    res.status(201).json({ user });
   } catch (error) {
-    console.log('error: ', error);    
-  } 
+    console.log('error: ', error);
+  }
 }
 
 
-export const httpGetAllUsers = async (req:Request, res:Response) => {
+export const httpGetAllUsers = async (req: Request, res: Response) => {
   const userRepository = AppDataSource.getRepository(User);
   const users = await userRepository.find();
   res.status(200).json({ users });
 }
 
 
-export const httpGetUserById = async (req:Request, res:Response) => {
+export const httpGetUserById = async (req: Request, res: Response) => {
   const userRepository = AppDataSource.getRepository(User);
-  const id  = req.params.id.toString();
+  const id = req.params.id.toString();
   const user = await userRepository.findOne({
-    where: {id}
+    where: { id }
   });
 
-  // console.log('user: was fount ', user);
   if (!user) {
     res.status(404).json({ message: 'User not found' });
   } else {
@@ -43,11 +39,11 @@ export const httpGetUserById = async (req:Request, res:Response) => {
   }
 }
 
-export const httpGetuserByEmail = async (req:Request, res:Response) => {
+export const httpGetuserByEmail = async (req: Request, res: Response) => {
   const userRepository = AppDataSource.getRepository(User);
   const email = req.params.email;
   const user = await userRepository.findOne({
-    where: {email}
+    where: { email }
   });
   if (!user) {
     res.status(404).json({ message: 'User not found' });

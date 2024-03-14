@@ -31,7 +31,6 @@ const Action = () => {
     setSignedData(signedData);
     setFileUrl(signedData.url);
 
-    console.log("file: ", file, "Image file from here", imageFile);
     if (!imageFile) {
       alert("NO Image PRESENT!!!!. Please refresh page or reupload");
     }

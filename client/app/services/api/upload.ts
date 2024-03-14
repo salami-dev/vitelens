@@ -12,7 +12,6 @@ export class UploadApi {
   }
 
   public static async uploadFile(file: File, url: string): Promise<void> {
-    console.log("file in uploadFile: ", file)
     await axios.put(url, file, {
       headers: {
         'Content-Type': file.type

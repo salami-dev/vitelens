@@ -9,9 +9,6 @@ export class PhotoApi {
       url: '/api/v1/photos',
       payload
     })
-
-    console.log("hello everybody")
-
     return response.data;
   }
 
