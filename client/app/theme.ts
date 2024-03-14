@@ -112,6 +112,10 @@ const theme = createTheme({
               background: `var(--Light-Purple, ${backgroundColor})`,
             },
           },
+          '&.Mui-disabled': {
+            backgroundColor: lightGrayColor,
+            color: textColor,
+          },
         },
       },
     },
