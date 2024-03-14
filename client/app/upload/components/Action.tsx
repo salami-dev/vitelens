@@ -7,6 +7,8 @@ import BaseFileSelect from "@/components/BaseFileSelect";
 import { Typography, Box, IconButton, Grid, Stack } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ImagePreview from "./ImagePreview";
+import { usePhotos } from "@/hooks/photos";
+import { PhotoUploadForm } from "@/bl/photos";
 
 const Action = () => {
   const [displayedError, setDisplayedError] = useState<string>();
@@ -15,14 +17,24 @@ const Action = () => {
   const [fileUrl, setFileUrl] = useState("");
   const [file, setFile] = useState<File>();
   const [fileName, setFileName] = useState("");
+  const { uploader, data } = usePhotos();
 
   const handleOnChange = (v: { url: string; name: string }) => {
     setFileUrl(v.url);
     setValue(v);
   };
 
-  const handleOnClick = () => {
+  const handleOnClick = async () => {
+    const photoData: PhotoUploadForm = {
+      name: "alaska",
+      description: "describing Alaska",
+      filename: fileName,
+      isPrivate: false,
+      uri: fileUrl,
+    };
     console.log(file);
+    console.log(uploader, data);
+    await uploader(photoData);
   };
 
   const ImageUpload = () => (

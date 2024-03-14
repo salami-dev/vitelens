@@ -1,5 +1,5 @@
 {
-  "extends": ["next/core-web-vitals","plugin:testing-library/react"],
+  "extends": ["next/core-web-vitals","plugin:testing-library/react", "plugin:@tanstack/eslint-plugin-query/recommended"],
   "overrides": [
     {
       "files": ["tests/**/*"],
@@ -7,5 +7,6 @@
         "jest": true
       }
     }
-  ]
+  ],
+  "plugins": ["@tanstack/query"]
 }
