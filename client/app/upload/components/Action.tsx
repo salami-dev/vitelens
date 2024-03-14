@@ -9,32 +9,59 @@ import CloseIcon from "@mui/icons-material/Close";
 import ImagePreview from "./ImagePreview";
 import { usePhotos } from "@/hooks/photos";
 import { PhotoUploadForm } from "@/bl/photos";
+import { UploadApi, UploadApiTypes } from "@/services/api/upload";
 
 const Action = () => {
   const [displayedError, setDisplayedError] = useState<string>();
   const [loading, setLoading] = useState(false);
-  const [value, setValue] = useState<{ url: string; name: string }>();
+  const [s3Uploaded, setS3Uploaded] = useState(false);
+  const [signedData, setSignedData] =
+    useState<UploadApiTypes.SignedUrlResponse>();
   const [fileUrl, setFileUrl] = useState("");
   const [file, setFile] = useState<File>();
   const [fileName, setFileName] = useState("");
   const { uploader, data } = usePhotos();
 
-  const handleOnChange = (v: { url: string; name: string }) => {
-    setFileUrl(v.url);
-    setValue(v);
+  const handleOnChange = async (
+    signedData: UploadApiTypes.SignedUrlResponse,
+    name: string,
+    imageFile: File
+  ) => {
+    setFileName(name);
+    setSignedData(signedData);
+    setFileUrl(signedData.url);
+
+    console.log("file: ", file, "Image file from here", imageFile);
+    if (!imageFile) {
+      alert("NO Image PRESENT!!!!. Please refresh page or reupload");
+    }
+
+    try {
+      await UploadApi.uploadFile(imageFile, signedData.preSignedurl);
+      setS3Uploaded(true);
+    } catch (error) {
+      setS3Uploaded(false);
+      setFile(undefined);
+    }
   };
 
   const handleOnClick = async () => {
     const photoData: PhotoUploadForm = {
-      name: "alaska",
-      description: "describing Alaska",
+      name: fileName,
+      description: "describing  " + fileName,
       filename: fileName,
       isPrivate: false,
       uri: fileUrl,
     };
-    console.log(file);
-    console.log(uploader, data);
-    await uploader(photoData);
+
+    try {
+      await uploader(photoData);
+      setS3Uploaded(false);
+      setFile(undefined);
+      setFileName("");
+    } catch (error) {
+      console.log(error, " : : : error while uploading to DB");
+    }
   };
 
   const ImageUpload = () => (
@@ -42,7 +69,6 @@ const Action = () => {
       onChange={handleOnChange}
       setError={setDisplayedError}
       setLoading={setLoading}
-      setFileName={setFileName}
       setFile={setFile}
     >
       <Stack useFlexGap>
@@ -128,10 +154,9 @@ const Action = () => {
             onClick={handleOnClick}
             variant="contained"
             fullWidth
-            disabled={!file}
+            disabled={!s3Uploaded}
           >
-            {" "}
-            Upload
+            {file ? (s3Uploaded ? "finish upload" : "loading...") : "Upload"}
           </Button>
         </Box>
       </Box>

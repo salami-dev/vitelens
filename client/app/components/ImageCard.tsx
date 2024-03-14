@@ -10,7 +10,7 @@ interface ImageCardProps {
 const ImageCard = ({ imgUrl }: ImageCardProps) => {
   return (
     <Card>
-      <CardMedia component="img" height="140" image={imgUrl} alt={imgUrl} />
+      <CardMedia component="img" height="240" image={imgUrl} alt={imgUrl} />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           Image uploaded by user
