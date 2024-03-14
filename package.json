@@ -1,0 +1,21 @@
+{
+  "name": "vitelens",
+  "version": "1.0.0",
+  "description": "<p align=\"center\">\r <a href=https://github.com/olaleykhan/vitelens target=\"_blank\">\r <img src='/placeholder.jpg' width=\"100%\" alt=\"Banner\" />\r </a>\r </p>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install:client": "cd client && npm install",
+    "install:server": "cd server && npm install",
+    "install": "npm run install:client & npm run install:server",
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "cd server && npm run dev",
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

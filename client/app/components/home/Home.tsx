@@ -48,10 +48,7 @@ export default function Home() {
   const handleLogout = async ()=>{
     await AuthApi.logout();
     mutate();
-    invaidate(({queryKey: ['auth']}));
-
-    // router.push('/auth');
-
+    invaidate();
   }
 
   React.useEffect(() => {
@@ -70,7 +67,6 @@ export default function Home() {
   };
 
   return (
- <AuthGuard>
     <Box>
      <Stack useFlexGap spacing={2} direction="column"  sx={{
       width: '200px',
@@ -115,6 +111,5 @@ export default function Home() {
      )}
    </Grid> 
    </Box>
- </AuthGuard>
   );
 }

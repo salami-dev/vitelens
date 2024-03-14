@@ -12,7 +12,7 @@ export const useAuth = () => {
     mutationFn: AuthApi.isLoggedIn
   })
   
-  const invaidate = queryClient.invalidateQueries
+  const invaidate = ()=>queryClient.invalidateQueries({queryKey: ['auth']});
 
   return {...qr, mutate, invaidate}
 };
