@@ -4,14 +4,14 @@ import React, { useRef } from 'react';
 import { Box } from '@mui/material';
 import { UploadApi } from '../services/api/upload';
 
-interface Props {
-  onChange: (v: { url: string; name: string }) => void;
-  setError: (error: string | undefined) => void;
-  setLoading: (loading: boolean) => void;
-  fileType?: 'image' | 'video' | 'file' | 'application/pdf';
-  children?: React.ReactNode;
-  disabled?: boolean;
-}
+  interface Props {
+    onChange: (v: { url: string; name: string }) => void;
+    setError: (error: string | undefined) => void;
+    setLoading: (loading: boolean) => void;
+    fileType?: 'image' | 'video' | 'file' | 'application/pdf';
+    children?: React.ReactNode;
+    disabled?: boolean;
+  }
 
 const BaseFileUpload: React.FC<Props> = ({ fileType = 'image', setError, setLoading, onChange, children, disabled }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -22,7 +22,7 @@ const BaseFileUpload: React.FC<Props> = ({ fileType = 'image', setError, setLoad
       inputRef.current.value = '';
       inputRef.current?.click();
     }
-  }, []);
+  }, [disabled]);
   const onFileSelect = React.useCallback(async (file: File) => {
     if (!file) return;
     if (!file.type.includes(fileType)) {
