@@ -22,12 +22,12 @@ export class Photo extends BaseEntity {
     filename: string
 
     @Column()
-    url: string
+    uri: string
 
     @Column("int", { default: 0 })
     views: number
 
-    
+
     @CreateDateColumn()
     createdAt: Date
 

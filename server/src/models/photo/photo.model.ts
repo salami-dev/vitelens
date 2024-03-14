@@ -7,14 +7,14 @@ export type PhotoProps = {
     description: string;
     isPrivate: boolean;
     filename: string;
-    url: string;
+    uri: string;
     views?: number;
     createdAt?: Date;
     updatedAt?: Date;
 }
-export async function createPhoto(photo:PhotoProps) {
+export async function createPhoto(photo: PhotoProps) {
     const photoRepository = AppDataSource.getRepository(Photo);
-    return await photoRepository.save(photo);  
+    return await photoRepository.save(photo);
 }
 
 export async function getAllPhotos() {
