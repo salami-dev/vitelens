@@ -40,6 +40,7 @@ vitelens is a monorepo project utilizing AWS SDK, React, Next.js, TypeScript, Je
 ```bash
 ├── .gitignore
 ├── README.Docker.md
+|--- package.json
 ├── client
 │   ├── .eslintrc.json
 │   ├── .gitignore
@@ -181,14 +182,18 @@ git clone https://github.com/olaleykhan/vitelens
 ```
 2.Install the dependencies with one of the package managers listed below:
 ```bash
-cd client && npm install
-cd server && npm install
+npm run install
 ```
-3.Start the client in  development mode:
+3.Start the entire app in  development mode:
+```bash
+npm run dev
+```
+#### or you ca start client and server individually on separate shells
+4.Start the client in  development mode:
 ```bash
 cd client && npm run dev
 ```
-3.Start the server in  development mode:
+5.Start the server in  development mode:
 ```bash
 cd server && npm run dev
 ```
