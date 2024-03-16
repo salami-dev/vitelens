@@ -6,9 +6,6 @@ export class AuthApi {
       url: '/auth/google',
       
     });
-
-    console.log("response in loginWithGoogle: ", response)
-
     return response.data;
   }
 
@@ -17,9 +14,6 @@ export class AuthApi {
     const response = await Http.get<AuthApiTypes.isLoggedInResponse>({
       url: '/auth/isloggedin'
     });
-
-    console.log(response, "response.data in isLoggedIn")
-
     return response.data;
   }
 
