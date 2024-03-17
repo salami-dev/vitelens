@@ -7,6 +7,7 @@ export type PhotoUploadForm = {
     [PhotoUploadFormKeys.filename]: string;
     [PhotoUploadFormKeys.isPrivate]: boolean;
     [PhotoUploadFormKeys.uri]: string;
+    [PhotoUploadFormKeys.tags]: string[];
 }
 
 

@@ -55,6 +55,7 @@ const Action = () => {
       filename: fileName,
       isPrivate: false,
       uri: fileUrl,
+      tags: ["tag1", "tag2", "tag9"],
     };
 
     try {
@@ -68,7 +69,7 @@ const Action = () => {
       setS3Uploaded(false);
       setFile(undefined);
       setFileName("");
-      router.push("/", { scroll: false });
+      // router.push("/", { scroll: true });
     }
   };
 
