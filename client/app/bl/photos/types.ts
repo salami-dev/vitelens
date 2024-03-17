@@ -21,3 +21,6 @@ export type PhotoType = {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export type PhotoAPIResponse = PhotoType;
+
