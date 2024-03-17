@@ -51,18 +51,3 @@ export const httpGetuserByEmail = async (req: Request, res: Response) => {
     res.status(200).json({ user });
   }
 }
-
-// export const httpGetAllUsers = async (req:Request, res:Response) => {
-//   const users = await AppDataSource.manager.find(User);
-//   res.status(200).json({ users });
-// }
-
-// export const httpGetUserById = async (req:Request, res:Response) => {
-//   const { id } = req.params;
-//   const user = await AppDataSource.manager.findOne(User, id);
-//   if (!user) {
-//     res.status(404).json({ message: 'User not found' });
-//   } else {
-//     res.status(200).json({ user });
-//   }
-// }

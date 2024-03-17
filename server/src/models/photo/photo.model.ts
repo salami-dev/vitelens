@@ -1,5 +1,7 @@
 import { AppDataSource } from "./../../connectDB";
 import { Photo } from "./Photo";
+import { Tag } from "../tag/Tag"
+import { User } from "../user/User"
 
 export type PhotoProps = {
     id?: number;
@@ -9,12 +11,13 @@ export type PhotoProps = {
     filename: string;
     uri: string;
     views?: number;
+    tags?: Tag[];
+    user: User;
     createdAt?: Date;
     updatedAt?: Date;
 }
 export async function createPhoto(photo: PhotoProps) {
-    const photoRepository = AppDataSource.getRepository(Photo);
-    return await photoRepository.save(photo);
+    return AppDataSource.getRepository(Photo).save(photo);
 }
 
 export async function getAllPhotos() {
