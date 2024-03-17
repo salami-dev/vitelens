@@ -4,6 +4,7 @@ export enum PhotoUploadFormKeys {
     isPrivate = 'isPrivate',
     filename = 'filename',
     uri = 'uri',
+    tags = 'tags'
 
 }
 

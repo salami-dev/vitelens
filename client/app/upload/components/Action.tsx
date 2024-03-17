@@ -1,15 +1,15 @@
 "use client";
 import { useState } from "react";
 import { LoadingButton as Button } from "@mui/lab";
-import BaseFileUpload from "@/components/BasefileUpload";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import BaseFileSelect from "@/components/BaseFileSelect";
 import { Typography, Box, IconButton, Grid, Stack } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ImagePreview from "./ImagePreview";
-import { usePhotos } from "@/hooks/photos";
+import { usePhotos, useCreatePhoto } from "@/hooks/photos";
 import { PhotoUploadForm } from "@/bl/photos";
 import { UploadApi, UploadApiTypes } from "@/services/api/upload";
+import { useRouter } from "next/navigation";
 
 const Action = () => {
   const [displayedError, setDisplayedError] = useState<string>();
@@ -20,7 +20,11 @@ const Action = () => {
   const [fileUrl, setFileUrl] = useState("");
   const [file, setFile] = useState<File>();
   const [fileName, setFileName] = useState("");
-  const { uploader, data } = usePhotos();
+  const { data } = usePhotos();
+  const { mutate } = useCreatePhoto();
+  const router = useRouter();
+
+  console.log("HERE IS MUTATE", mutate);
 
   const handleOnChange = async (
     signedData: UploadApiTypes.SignedUrlResponse,
@@ -51,15 +55,21 @@ const Action = () => {
       filename: fileName,
       isPrivate: false,
       uri: fileUrl,
+      tags: ["tag1", "tag2", "tag9"],
     };
 
     try {
-      await uploader(photoData);
+      mutate(photoData);
+      // setS3Uploaded(false);
+      // setFile(undefined);
+      // setFileName("");
+    } catch (error) {
+      console.log(error, " : : : error while uploading to DB");
+    } finally {
       setS3Uploaded(false);
       setFile(undefined);
       setFileName("");
-    } catch (error) {
-      console.log(error, " : : : error while uploading to DB");
+      // router.push("/", { scroll: true });
     }
   };
 

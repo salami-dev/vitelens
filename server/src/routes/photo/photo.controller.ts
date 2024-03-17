@@ -1,15 +1,44 @@
 import { type Request, type Response } from 'express';
-import { Photo } from "./../../models";
+import { AppDataSource } from "./../../connectDB";
+import { Tag } from './../../models';
+import { User } from './../../models';
 import { createPhoto, getAllPhotos, getPhotoById } from '../../models/photo/photo.model';
 import catchAsync from "../../utils/catchAsync";
 
 
 
+type photoReqBody = {
+  name: string;
+  description: string;
+  isPrivate: boolean;
+  filename: string;
+  uri: string;
+  tags: string[];
+}
 
 export const httpCreatePhoto = catchAsync(
   async (req: Request, res: Response) => {
-    const { name, description, isPrivate, filename, uri } = req.body as Photo;
-    const photo = { name, description, isPrivate, filename, uri }
+    const { name, description, isPrivate, filename, uri, tags: tagIds } = req.body as photoReqBody;
+    const userId: string = req.user as string;
+
+    // get needed DB repositories (TypeORM specific)
+    const userRepository = AppDataSource.getRepository(User);
+    const tagRepository = AppDataSource.getRepository(Tag);
+
+    // user needed in photo
+    const user = await userRepository.findOne({ where: { id: userId } });
+
+
+    // find each tag, if it does not exist. create one.
+    const tags = await Promise.all(tagIds.map(async (tagName) => {
+      let tag = await tagRepository.findOne({ where: { name: tagName } });
+      if (!tag) {
+        tag = tagRepository.create({ name: tagName });
+        tag = await tagRepository.save(tag);
+      }
+      return tag;
+    }));
+    const photo = { name, description, isPrivate, filename, uri, user, tags }
 
     res.status(201).json(await createPhoto(photo));
   }

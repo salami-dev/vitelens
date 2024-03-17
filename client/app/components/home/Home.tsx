@@ -7,9 +7,10 @@ import ImageCard from "@/components/ImageCard";
 import { AuthApi } from "@/services/api/auth";
 import { useAuth } from "@/hooks/auth";
 import { PhotoApi } from "@/services/api/photos";
+import { PhotoAPIResponse } from "@/bl/photos";
 
 export default function Home() {
-  const [images, setImages] = React.useState([] as any[]);
+  const [images, setImages] = React.useState<PhotoAPIResponse[]>();
 
   const authClient = useAuth();
   const { mutate, invaidate } = authClient;
@@ -54,9 +55,9 @@ export default function Home() {
         </Link>
       </Stack>
       <Grid container spacing={2}>
-        {images.map((image, index) => (
+        {images?.map((image, index) => (
           <Grid item key={index} xs={12} sm={6} md={4}>
-            <ImageCard imgUrl={image.uri ?? image.url} />
+            <ImageCard data={image} />
           </Grid>
         ))}
       </Grid>
