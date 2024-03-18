@@ -182,7 +182,7 @@ git clone https://github.com/olaleykhan/vitelens
 ```
 2.Install the dependencies with one of the package managers listed below:
 ```bash
-npm run install
+npm run install:app
 ```
 3.Start the entire app in  development mode:
 ```bash
