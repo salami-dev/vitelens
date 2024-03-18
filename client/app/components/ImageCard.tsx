@@ -2,18 +2,20 @@
 
 import React from "react";
 import { Card, CardMedia, CardContent, Typography } from "@mui/material";
+import { PhotoType } from "@/bl/photos";
 
-interface ImageCardProps {
-  imgUrl: string;
+interface Props {
+  data: PhotoType;
 }
 
-const ImageCard = ({ imgUrl }: ImageCardProps) => {
+const ImageCard: React.FC<Props> = ({ data }) => {
+  const { uri, description, name, filename } = data;
   return (
     <Card>
-      <CardMedia component="img" height="240" image={imgUrl} alt={imgUrl} />
+      <CardMedia component="img" height="240" image={uri} alt={name} />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          Image uploaded by user
+          this image is called: {name}
         </Typography>
       </CardContent>
     </Card>

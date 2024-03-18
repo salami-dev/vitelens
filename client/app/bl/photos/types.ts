@@ -7,6 +7,7 @@ export type PhotoUploadForm = {
     [PhotoUploadFormKeys.filename]: string;
     [PhotoUploadFormKeys.isPrivate]: boolean;
     [PhotoUploadFormKeys.uri]: string;
+    [PhotoUploadFormKeys.tags]: string[];
 }
 
 
@@ -21,3 +22,6 @@ export type PhotoType = {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export type PhotoAPIResponse = PhotoType;
+
