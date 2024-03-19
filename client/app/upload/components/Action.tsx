@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import { LoadingButton as Button } from "@mui/lab";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import BaseFileSelect from "@/components/BaseFileSelect";
@@ -7,9 +7,14 @@ import { Typography, Box, IconButton, Grid, Stack } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ImagePreview from "./ImagePreview";
 import { usePhotos, useCreatePhoto } from "@/hooks/photos";
-import { PhotoUploadForm } from "@/bl/photos";
+import { PhotoUploadForm, PhotoUploadFormKeys } from "@/bl/photos";
 import { UploadApi, UploadApiTypes } from "@/services/api/upload";
 import { useRouter } from "next/navigation";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { BaseInput } from "@/components/BaseInput";
+import Chip from "@mui/material/Chip";
+
+// TODO: clear react hook form and dependemcies
 
 const Action = () => {
   const [displayedError, setDisplayedError] = useState<string>();
@@ -23,8 +28,19 @@ const Action = () => {
   const { data } = usePhotos();
   const { mutate } = useCreatePhoto();
   const router = useRouter();
+  const [photoTags, setPhotoTags] = useState<string | undefined>(undefined);
+  const [description, setDescription] = useState<string>("");
+  const [name, setName] = useState<string>(fileName);
 
-  console.log("HERE IS MUTATE", mutate);
+  // TODO: maybe put this in a function or hook. and expecially a useeffect
+  const tagsArray = photoTags
+    ?.trim()
+    .split(",")
+    .filter((tag) => tag !== "");
+  const tagsSet = new Set(tagsArray);
+  const retroTags = Array.from(tagsSet);
+
+  const onSubmit: SubmitHandler<PhotoUploadForm> = (data) => console.log(data);
 
   const handleOnChange = async (
     signedData: UploadApiTypes.SignedUrlResponse,
@@ -48,28 +64,42 @@ const Action = () => {
     }
   };
 
-  const handleOnClick = async () => {
+  React.useEffect(() => console.log("namein ....", name), [name]);
+
+  // TODO: hand;e better and add type of event to e
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const photoData: PhotoUploadForm = {
-      name: fileName,
-      description: "describing  " + fileName,
+      name: name,
+      description: description,
       filename: fileName,
       isPrivate: false,
       uri: fileUrl,
-      tags: ["tag1", "tag2", "tag9"],
+      tags: tagsSet ? Array.from(tagsSet) : [],
     };
+
+    console.log(photoData, "PHOTO DATA here");
 
     try {
       mutate(photoData);
+
       // setS3Uploaded(false);
       // setFile(undefined);
       // setFileName("");
     } catch (error) {
       console.log(error, " : : : error while uploading to DB");
+      return;
     } finally {
+      console.log("thIS STILL RUNS!!!!!!!!!!!1  ");
       setS3Uploaded(false);
       setFile(undefined);
       setFileName("");
-      // router.push("/", { scroll: true });
+      setName("");
+      setDescription("");
+      setPhotoTags(undefined);
+      setDisplayedError("");
+      router.push("/");
     }
   };
 
@@ -154,20 +184,73 @@ const Action = () => {
       </Box>
 
       <Box>
+        <Box component="form" onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <BaseInput
+                name={PhotoUploadFormKeys.name}
+                value={name}
+                id={PhotoUploadFormKeys.name}
+                required
+                onChange={(e) => setName(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <BaseInput
+                value={description}
+                name={PhotoUploadFormKeys.description}
+                id={PhotoUploadFormKeys.description}
+                required
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </Grid>
+          </Grid>
+
+          <Stack direction="row" spacing={1} my={2}>
+            {retroTags?.map((tag) => (
+              <Chip
+                label={tag}
+                key={tag}
+                variant="outlined"
+                color="info"
+                sx={{ minWidth: 40, fontSize: 16 }}
+                size="medium"
+              />
+            ))}
+          </Stack>
+          <Grid container>
+            <BaseInput
+              value={photoTags ?? ""}
+              name={PhotoUploadFormKeys.tags}
+              id={PhotoUploadFormKeys.tags}
+              disabled={(retroTags?.length ?? 0) > 10}
+              required
+              onChange={(e) => {
+                setPhotoTags(e.target.value);
+              }}
+            />
+          </Grid>
+          <Box pt={2}>
+            <Button
+              // onClick={handleOnClick}
+              type="submit"
+              variant="contained"
+              fullWidth
+              disabled={!s3Uploaded}
+            >
+              {file ? (s3Uploaded ? "finish upload" : "loading...") : "Upload"}
+            </Button>
+          </Box>
+        </Box>
+      </Box>
+      <Typography variant="subtitle2" color="error">
+        Error Here : {displayedError}
+      </Typography>
+
+      <Box>
         <Typography variant="subtitle2">
           File name : {fileName ? fileName : "Please select an Image to upload"}
         </Typography>
-
-        <Box pt={2}>
-          <Button
-            onClick={handleOnClick}
-            variant="contained"
-            fullWidth
-            disabled={!s3Uploaded}
-          >
-            {file ? (s3Uploaded ? "finish upload" : "loading...") : "Upload"}
-          </Button>
-        </Box>
       </Box>
     </>
   );
