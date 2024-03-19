@@ -2,8 +2,6 @@ import React from "react";
 import Link from "next/link";
 import { Box, Container, Typography, Grid, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import FileUploadIcon from "@mui/icons-material/FileUpload";
-import BaseFileUpload from "@/components/BasefileUpload";
 import Action from "./components/Action";
 
 const Upload = () => {
