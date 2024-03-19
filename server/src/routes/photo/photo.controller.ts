@@ -21,6 +21,11 @@ export const httpCreatePhoto = catchAsync(
     const { name, description, isPrivate, filename, uri, tags: tagIds } = req.body as photoReqBody;
     const userId: string = req.user as string;
 
+    if (!name || !description || !filename || !uri) {
+      res.status(400).json({ message: "name, description, filename, uri are required" });
+      return;
+    }
+
     // get needed DB repositories (TypeORM specific)
     const userRepository = AppDataSource.getRepository(User);
     const tagRepository = AppDataSource.getRepository(Tag);

@@ -5,12 +5,12 @@ import cors from 'cors';
 import helmet from 'helmet';
 import router from './routes/router';
 import authRouter from './routes/auth/auth.router';
-import { passportGoogle, checkLoggedIn, session, removeStub  } from './services/auth/passport-google-strategy';
+import { passportGoogle, checkLoggedIn, session, removeStub } from './services/auth/passport-google-strategy';
 import AppError from './utils/appError';
 
-const app: Express = express();   
+const app: Express = express();
 app.use(cors({
-  origin: 'http://localhost:3000',  
+  origin: 'http://localhost:3000',
   credentials: true // enable set cookie
 }));
 if (process.env.NODE_ENV === 'development') {
@@ -33,9 +33,12 @@ app.use(express.json());
 app.use(passportGoogle.initialize());
 app.use(passportGoogle.session());
 
+app.use('/health', (req, res) => {
+  res.send('OK');
+});
 
 app.use('/auth', authRouter);
-app.use('/api/v1/' ,checkLoggedIn, router);
+app.use('/api/v1/', checkLoggedIn, router);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
