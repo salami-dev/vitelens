@@ -1,5 +1,5 @@
 import { PhotoUploadFormKeys } from "./enums";
-
+import { AppUser } from "../user";
 
 export type PhotoUploadForm = {
     [PhotoUploadFormKeys.name]: string;
@@ -12,7 +12,7 @@ export type PhotoUploadForm = {
 
 
 export type PhotoType = {
-    id: number;
+    id: string;
     name: string;
     description: string;
     isPrivate: boolean;
@@ -21,6 +21,11 @@ export type PhotoType = {
     views: number;
     createdAt: Date;
     updatedAt: Date;
+}
+
+export type PhotoResposeType = PhotoType & {
+    tags: string[];
+    user: AppUser;
 }
 
 export type PhotoAPIResponse = PhotoType;

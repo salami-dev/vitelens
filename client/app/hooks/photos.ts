@@ -8,11 +8,7 @@ export const usePhotos = () => {
         queryFn: PhotoApi.getPhotos
     });
 
-    async function getImages() {
-        await PhotoApi.getPhotos();
-    }
-
-    return { data: "hello my negromongas!!!", getImages }
+    return query;
 }
 
 
@@ -33,8 +29,9 @@ export function useCreatePhoto() {
             console.log("success created image photo");
         },
 
-        onSettled: async (_, error) => {
+        onSettled: async (data, error) => {
             console.log("upload successful. now lets invalidate the query so that we can get the new data from the server");
+            console.log("IS THIS RESPONSE DATA?   lET'S FIND OUT!! ", data);
             if (error) {
                 console.log(error);
             } else {
@@ -42,4 +39,17 @@ export function useCreatePhoto() {
             }
         },
     });
+}
+
+
+
+export function useGetPhoto(id: string) {
+    const query = useQuery({
+        queryKey: ['photo', id],
+        queryFn: () => PhotoApi.getPhotoByID(id)
+    });
+
+    return query;
+
+
 }

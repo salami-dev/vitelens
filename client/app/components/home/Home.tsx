@@ -6,22 +6,15 @@ import { Grid, Box, Stack } from "@mui/material";
 import ImageCard from "@/components/ImageCard";
 import { AuthApi } from "@/services/api/auth";
 import { useAuth } from "@/hooks/auth";
-import { PhotoApi } from "@/services/api/photos";
-import { PhotoAPIResponse } from "@/bl/photos";
+import { usePhotos } from "@/hooks/photos";
 
 export default function Home() {
-  const [images, setImages] = React.useState<PhotoAPIResponse[]>();
+  const { data, isLoading, isError, error } = usePhotos();
+
+  console.log("PHOTOS", usePhotos());
 
   const authClient = useAuth();
   const { mutate, invaidate } = authClient;
-
-  const handleLoginWithGoogle = async () => {
-    try {
-      await AuthApi.loginWithGoogle();
-    } catch (error) {
-      console.log("ERROR", error);
-    }
-  };
 
   const handleLogout = async () => {
     await AuthApi.logout();
@@ -29,13 +22,8 @@ export default function Home() {
     invaidate();
   };
 
-  React.useEffect(() => {
-    const fetchImages = async () => {
-      const images = await PhotoApi.getPhotos(); //TODO: haha. you know what to do.
-      setImages(images);
-    };
-    fetchImages();
-  }, []);
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
 
   return (
     <Box>
@@ -55,7 +43,7 @@ export default function Home() {
         </Link>
       </Stack>
       <Grid container spacing={2}>
-        {images?.map((image, index) => (
+        {data?.map((image, index) => (
           <Grid item key={index} xs={12} sm={6} md={4}>
             <ImageCard data={image} />
           </Grid>

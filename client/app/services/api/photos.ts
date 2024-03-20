@@ -1,5 +1,5 @@
 import { Http } from './../http';
-import { PhotoUploadForm, PhotoType } from '@/bl/photos';
+import { PhotoUploadForm, PhotoType, PhotoResposeType } from '@/bl/photos';
 
 export class PhotoApi {
 
@@ -20,10 +20,9 @@ export class PhotoApi {
     return response.data
   }
 
-  public static async getPhotoByID(id: string): Promise<PhotoApiTypes.PhotoAPIResponse> {
-    const response = await Http.get<PhotoApiTypes.PhotoAPIResponse>({
+  public static async getPhotoByID(id: string): Promise<PhotoApiTypes.getPhotoResponse> {
+    const response = await Http.get<PhotoApiTypes.getPhotoResponse>({
       url: `/api/v1/photos/${id}`,
-      // query: { id },
 
     })
     return response.data
@@ -32,7 +31,8 @@ export class PhotoApi {
 }
 
 export declare namespace PhotoApiTypes {
-  export type CreateResponse = PhotoUploadForm;
+  export type CreateResponse = PhotoResposeType;
   export type PhotoAPIResponse = PhotoType;
+  export type getPhotoResponse = PhotoResposeType;
 }
 
