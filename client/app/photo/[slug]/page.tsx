@@ -3,7 +3,7 @@ import React from "react";
 import { Box, Container, Typography } from "@mui/material";
 import { useGetPhoto } from "@/hooks/photos";
 import BasePageLoader from "@/components/BasePageLoader";
-import ImageCard from "./components/ImageCard";
+import ImageCard from "./components/Imagecard";
 
 const Page = ({ params }: { params: { slug: string } }) => {
   const photoId = params.slug;
