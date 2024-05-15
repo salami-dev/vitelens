@@ -12,8 +12,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # production
-/build
-/public
+build
+# /public
 
 node_modules
 dist
